@@ -20,6 +20,8 @@ class atm:
         print("_______________________")
 
 
+
+#create a dynamic number of user objs to store and retrive.
 obj1=atm()
 obj1.total=5000
 obj2=atm()
