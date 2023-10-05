@@ -11,50 +11,80 @@ class Atm:
         else:
             print("Insufficient balance.")
             print("_______________________")
+        return acc
 
     def deposit(self,acc,amount):
-        #aa=int(input(name,", enter the amount need to be deposited..."))
         acc.balance += amount
         print(f"New Balance is {acc.balance}")
         print("_______________________")
+        return acc
         
     def check_balance(self,acc):
         print(f"Balance is {acc.balance}")
         print("_______________________")
 
 class Account:
-    def __init__(self,name,balance):
+    def __init__(self,name,balance, password):
         self.name = name
         self.balance = balance
+        self.password = password
+        
+usernames = ['Raju', 'Jacob', 'Kate']
+balances = [10000, 34000, 12500]
+passwords = ["raju1567", "jac007", "kate111"]
 
-no_atm = int(input("enter the total number of atm's available..."))
-lst_atm = [Atm() for i in range(no_atm)]
-a = 0
-while(a!=5):
-    print("1. Select Atm\n2. Exit")
-    option = int(input("enter the option selected"))
-    
-    if option == 1:
-        choose_atm = int(input("enter the atm..."))
-        lst_atm[choose_atm-1] == Atm()
-        print("1.New Account\n2.Deposit\n3.Withdraw\n4.Change ATM")
-        operation_selected = int(input("Enter the operation selected."))
-        b=0
-        if operation_selected == 1:
-            name = input("Enter the name of the user...")
-            balance = int(input("enter the initial deposit..."))
-            username = input("enter the username prefered...")
-            username = Account(name,balance)
-        elif operation_selected == 2:
-            user = input("enter the username...")
-            deposit = int(input("Enter the money need to be deposited"))
-            lst_atm
+## Creating accounts
+accountList = [Account(usernames[i], balances[i], passwords[i]) for i in range(len(usernames))]
 
+## Creating an Atm object
+atm = Atm()
 
-    elif option == 2:
-        a = 5
-        print("EXIT")    
+print("******* Welcome to ATM ********")
+print("_______________________________")
+print()
+
+while True:
+    selection = int(input("Enter your selection: \n\n1. Login to your account\n2. Exit\n"))
+    if selection == 1:
+        uname = input("Enter your username : ")
+        while uname not in usernames:
+            uname = input("Enter a correct username : ")
+
+        ## Acquiring the required account fron accountList
+        for idx, acc in enumerate(accountList):
+            if acc.name == uname:
+                userAcc = acc
+                userAccIdx = idx
+
+        passw = input("Enter your password : ")
+        while userAcc.password != passw:
+            passw = input("Enter the correct password : ")
+
+        while True:
+            option = int(input("Enter your selection : \n\n1. Withdraw\n2. Deposit\n3. Check balance\n4. Logout\n"))
+            if option == 1:
+                amount = float(input("Enter the amout to withdraw : "))
+                accountList[userAccIdx] = atm.withdraw(userAcc, amount)
+
+            elif option == 2:
+                amount = float(input("Enter the amount to deposit: "))
+                accountList[userAccIdx] = atm.deposit(userAcc, amount)
+            elif option == 3:
+                atm.check_balance(userAcc)
+            elif option == 4:
+                print("\nLogging out of the account!\n")
+                break
+            else:
+                print("Enter a valid option!")
+                continue
+
+    elif selection == 2:
+        print("Exiting ATM application!")
+        break
     else:
-        print("enter either 1 or 2")
+        print("Enter a valid option!")
+        continue
+
+	
 
         
